@@ -1,5 +1,4 @@
 import "./globals.css";
-import { useEffect } from "react";
 
 export const metadata = {
   title: "Хинкальня Склад",
@@ -7,12 +6,6 @@ export const metadata = {
 };
 
 export default function RootLayout({ children }) {
-  useEffect(() => {
-    if ("serviceWorker" in navigator) {
-      navigator.serviceWorker.register("/sw.js");
-    }
-  }, []);
-
   return (
     <html lang="ru">
       <head>
