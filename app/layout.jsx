@@ -11,3 +11,5 @@ export default function RootLayout({ children }) {
     </html>
   );
 }
+<link rel="manifest" href="/manifest.json" />
+<meta name="theme-color" content="#2ecc71" />
