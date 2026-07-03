@@ -7,9 +7,9 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="ru">
+      <link rel="manifest" href="/manifest.json" />
+<meta name="theme-color" content="#2ecc71" />
       <body>{children}</body>
     </html>
   );
 }
-<link rel="manifest" href="/manifest.json" />
-<meta name="theme-color" content="#2ecc71" />
