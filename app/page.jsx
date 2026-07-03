@@ -1,108 +1,109 @@
 "use client";
-<img
-  src="/logo.png"
-  className="logo"
-/>
 
-<h1 className="title">
-Учет склада
-</h1>
 import { useState, useEffect } from "react";
 import { sendData } from "../lib/api";
 
 export default function Home() {
   const [mode, setMode] = useState("");
   const [product, setProduct] = useState("");
+  const [products, setProducts] = useState([]);
   const [amount, setAmount] = useState("");
   const [reason, setReason] = useState("Порча");
-  const [products, setProducts] = useState([]);
+
   useEffect(() => {
-  fetch("https://script.google.com/macros/s/AKfycbyKRbhrdqYlY9-kY1HMhP5M9F687i4ye52HHXL7ipq3Uqj168xJsEjtKItvFNpH12rXlA/exec?action=products")
-    .then((res) => res.json())
-    .then((data) => setProducts(data))
-    .catch(console.error);
-}, []);
-  
+    fetch(
+      "https://script.google.com/macros/s/AKfycbyKRbhrdqYlY9-kY1HMhP5M9F687i4ye52HHXL7ipq3Uqj168xJsEjtKItvFNpH12rXlA/exec?action=products"
+    )
+      .then((res) => res.json())
+      .then((data) => setProducts(data))
+      .catch(console.error);
+  }, []);
+
   async function submit() {
-  if (!products.includes(product)) {
-  alert("Такого товара нет в базе.");
-  return;
-}
-  if (!product || !amount) {
-    alert("Заполните все поля");
-    return;
+    if (!product || !amount) {
+      alert("Заполните все поля");
+      return;
+    }
+
+    if (!products.includes(product)) {
+      alert("Такого товара нет в базе.");
+      return;
+    }
+
+    try {
+      const result = await sendData({
+        type: mode,
+        product,
+        amount,
+        reason: mode === "Списание" ? reason : "",
+        date: new Date().toISOString(),
+      });
+
+      alert(result.message || "Успешно");
+
+      setProduct("");
+      setAmount("");
+      setReason("Порча");
+      setMode("");
+    } catch (error) {
+      alert(error.message);
+    }
   }
-
-  try {
-    const result = await sendData({
-      type: mode,
-      product,
-      amount,
-      reason: mode === "Списание" ? reason : "",
-      date: new Date().toISOString(),
-    });
-
-    alert(result.message || "Успешно");
-
-    setProduct("");
-    setAmount("");
-    setReason("Порча");
-    setMode("");
-
-  }
-  catch (error) {
-  alert(error.message);
-}
-}
 
   return (
-    <main className="container", fontFamily: "Arial" }}>
-      <h1>Учет склада</h1>
+    <main className="container">
+      <img src="/logo.png" className="logo" alt="Хинкальня" />
 
-      {!mode && (
-        <>
-          <button onClick={() => setMode("Приход")}>Приход</button>
+      <h1 className="title">Учет склада</h1>
 
-          <br />
-          <br />
+      <div className="card">
+        <div className="buttons">
+          <button
+            className={`modeButton ${
+              mode === "Приход" ? "active" : ""
+            }`}
+            onClick={() => setMode("Приход")}
+          >
+            Приход
+          </button>
 
-          <button onClick={() => setMode("Списание")}>Списание</button>
-        </>
-      )}
+          <button
+            className={`modeButton ${
+              mode === "Списание" ? "active" : ""
+            }`}
+            onClick={() => setMode("Списание")}
+          >
+            Списание
+          </button>
+        </div>
 
-      {mode && (
-        <>
-          <h2>{mode}</h2>
+        {mode && (
+          <>
+            <input
+              className="input"
+              list="products"
+              placeholder="Начните вводить товар..."
+              value={product}
+              onChange={(e) => setProduct(e.target.value)}
+            />
 
-         <input
-  list="products"
-  placeholder="Начните вводить товар..."
-  value={product}
-  onChange={(e) => setProduct(e.target.value)}
-/>
+            <datalist id="products">
+              {products.map((item) => (
+                <option key={item} value={item} />
+              ))}
+            </datalist>
 
-<datalist id="products">
-  {products.map((item) => (
-    <option key={item} value={item} />
-  ))}
-</datalist>
+            <input
+              className="input"
+              type="number"
+              placeholder="Количество"
+              value={amount}
+              onChange={(e) => setAmount(e.target.value)}
+            />
 
-          <br />
-          <br />
-
-          <input
-            type="number"
-            placeholder="Количество"
-            value={amount}
-            onChange={(e) => setAmount(e.target.value)}
-          />
-
-          <br />
-          <br />
-
-          {mode === "Списание" && (
-            <>
+            {mode === "Списание" && (
               <select
+                className="select"
                 value={reason}
                 onChange={(e) => setReason(e.target.value)}
               >
@@ -113,20 +114,14 @@ export default function Home() {
                 <option>Проработки</option>
                 <option>Проба</option>
               </select>
+            )}
 
-              <br />
-              <br />
-            </>
-          )}
-
-          <button onClick={submit}>Отправить</button>
-
-          <br />
-          <br />
-
-          <button onClick={() => setMode("")}>Назад</button>
-        </>
-      )}
+            <button className="submit" onClick={submit}>
+              Отправить
+            </button>
+          </>
+        )}
+      </div>
     </main>
   );
 }
