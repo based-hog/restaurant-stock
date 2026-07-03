@@ -49,7 +49,7 @@ export default function Home() {
 }
 
   return (
-    <main style={{ padding: 20, fontFamily: "Arial" }}>
+    <main className="container", fontFamily: "Arial" }}>
       <h1>Учет склада</h1>
 
       {!mode && (
