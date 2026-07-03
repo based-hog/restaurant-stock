@@ -89,8 +89,17 @@ export default function Home() {
 
   return (
     <main style={styles.page}>
-      <img src="/logo.png" style={styles.logo} />
-      <h1 style={styles.title}>Хинкальня</h1>
+      <div style={{ display: "flex", justifyContent: "center", marginBottom: 20 }}>
+  <img
+    src="/logo.png"
+    alt="Хинкальня"
+    style={{
+      width: 180,
+      height: "auto",
+      objectFit: "contain",
+    }}
+  />
+</div>
 
       <div style={styles.card}>
         <div style={styles.row}>
