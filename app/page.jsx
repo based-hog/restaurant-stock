@@ -96,6 +96,8 @@ export default function Home() {
 
   return (
     <main style={styles.page}>
+      <PwaRegister />import PwaRegister from "./PwaRegister";
+      
       {/* LOGO */}
       <div style={styles.logoWrap}>
         <img src="/logo.png" style={styles.logo} />
