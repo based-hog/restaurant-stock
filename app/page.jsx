@@ -1,5 +1,12 @@
 "use client";
+<img
+  src="/logo.png"
+  className="logo"
+/>
 
+<h1 className="title">
+Учет склада
+</h1>
 import { useState, useEffect } from "react";
 import { sendData } from "../lib/api";
 
