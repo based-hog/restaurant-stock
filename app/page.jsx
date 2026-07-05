@@ -136,3 +136,138 @@ export default function Home() {
   }
 
   return (
+  <main style={styles.page}>
+  <PwaRegister />
+
+  <div style={styles.logoWrap}>
+    <img
+      src="/logo.png"
+      alt="Хинкальня"
+      style={styles.logo}
+    />
+  </div>
+
+  <div style={styles.card}>
+    <div style={styles.row}>
+      <button
+        style={{
+          ...styles.btn,
+          background:
+            mode === "Списание" ? "#e74c3c" : "#eee",
+          color:
+            mode === "Списание" ? "#fff" : "#333",
+        }}
+        onClick={() => setMode("Списание")}
+      >
+        Списание
+      </button>
+
+      <button
+        style={{
+          ...styles.btn,
+          background:
+            mode === "Списание штат"
+              ? "#3498db"
+              : "#eee",
+          color:
+            mode === "Списание штат"
+              ? "#fff"
+              : "#333",
+        }}
+        onClick={() => setMode("Списание штат")}
+      >
+        Списание штат
+      </button>
+    </div>
+
+    {mode && (
+      <>
+        <div
+          style={styles.inputWrap}
+          ref={wrapRef}
+        >
+          <input
+            style={styles.input}
+            placeholder="Поиск товара..."
+            value={product}
+            onChange={(e) =>
+              search(e.target.value)
+            }
+          />
+
+          {open && filtered.length > 0 && (
+            <div style={styles.dropdown}>
+              {filtered.map((item) => (
+                <div
+                  key={item}
+                  style={styles.item}
+                  onClick={() =>
+                    addProduct(item)
+                  }
+                >
+                  {item}
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+
+        {cart.map((item, index) => (
+          <div
+            key={item.product}
+            style={styles.cartItem}
+          >
+            <button
+              style={styles.remove}
+              onClick={() =>
+                removeProduct(index)
+              }
+            >
+              ✕
+            </button>
+
+            <div style={styles.product}>
+              {item.product}
+            </div>
+
+            <input
+              type="number"
+              value={item.amount}
+              placeholder="Количество"
+              style={styles.qty}
+              onChange={(e) =>
+                changeAmount(
+                  index,
+                  e.target.value
+                )
+              }
+            />
+          </div>
+        ))}
+
+        <button
+          style={styles.submit}
+          onClick={submit}
+        >
+          Отправить
+        </button>
+      </>
+    )}
+  </div>
+
+  {toast && (
+    <div
+      style={{
+        ...styles.toast,
+        background:
+          toast.type === "success"
+            ? "#2ecc71"
+            : "#e74c3c",
+      }}
+    >
+      {toast.message}
+    </div>
+  )}
+</main>
+);
+}
