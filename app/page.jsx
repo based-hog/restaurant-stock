@@ -171,15 +171,7 @@ export default function Home() {
       style={styles.logo}
     />
   </div>
-<div
-  style={{
-    textAlign: "center",
-    marginBottom: 15,
-    fontWeight: "bold",
-  }}
->
-  Товаров: {products.length}
-</div>
+  
   <div style={styles.card}>
     <div style={styles.row}>
       <button
